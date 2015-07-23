@@ -63,35 +63,29 @@ def read_labels(filename):
         return [int(line) for line in f]
 
 
+def score(perceptron, data):
+    correct = 0
+    for inputs, label in data:
+        if perceptron.label(inputs) == label:
+            correct += 1
+    return correct / len(data)
+
+
 def main():
-    #data = [([0, 0], 0), ([1, 0], 1), ([1, 1], 1), ([0, 1], 1)]
-    data=[([0],1),([1],0)]
-    perceptron = Perceptron(1)
-    perceptron.train(data)
-
-    print('Training done.')
-    for a in range(2):
-        #for b in range(2):
-        print('NOT {} = {}'.format(a, perceptron.label([a])))
-    return
-
     # Train our perceptron
-    #train_data = read_data('trainData.csv', 'trainLabels.csv')
-
-
+    train_data = read_data('trainData.csv', 'trainLabels.csv')
 
     perceptron = Perceptron(len(train_data[0][0]), zero=5, one=6)
+    perceptron.train(train_data)
+    accuracy = score(perceptron, train_data)
+    # Perceptron training algorithm only terminates when perfect
+    print('Training accuracy (should be 1): {}'.format(accuracy))
 
     # Test the perceptron
     test_data = read_data('testData.csv', 'testLabels.csv')
+    accuracy = score(perceptron, test_data)
+    print('Testing accuracy: {}'.format(accuracy))
 
-    tests_passed = 0
-    tests_failed = 0
-    for input, label in test_data:
-        if perceptron.label(input) == label:
-            tests_passed += 1
-        else:
-            tests_failed += 1
 
 if __name__ == '__main__':
     main()
