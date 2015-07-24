@@ -97,16 +97,16 @@ class NeuralNetwork():
                 gp = self._act_prime(node.input)
                 if ln > 0:
                     for pi, parent in enumerate(self._levels[ln - 1]):
-                        #node.weights[pi] += gp * rate * node.delta * parent.activation
-                        node.weights[pi] +=  rate * node.delta * parent.activation
+                        node.weights[pi] += gp * rate * node.delta * parent.activation
+                        #node.weights[pi] +=  rate * node.delta * parent.activation
                 else:
                     # Top level of hidden nodes
                     for pi, act in enumerate(inputs):
                         #node.weights[pi] += gp * rate * node.delta * act
                         node.weights[pi] +=  rate * node.delta * act
                 # Account for bias in every node
-                #node.weights[-1] += gp * rate * node.delta * 1
-                node.weights[-1] +=  rate * node.delta * 1
+                node.weights[-1] += gp * rate * node.delta * 1
+                #node.weights[-1] +=  rate * node.delta * 1
 
     def learn(self, examples, rate, num_passes=1000):
         ''' Learn from examples. '''
@@ -140,12 +140,13 @@ def main():
     #    lst.insert(0, -1)
     num_inputs = len(train_data[0][0])
     #train_data=train_data[:1]
-    net = NeuralNetwork([num_inputs, 1, 1], sigmoid, sigmoid_prime)
-    net.learn(train_data, .001, 1000)
-    print('Training score: {}'.format(score(net, train_data)))
+    for hidden_nodes in range(5, 16):
+        net = NeuralNetwork([num_inputs, hidden_nodes, 1], sigmoid, sigmoid_prime)
+        net.learn(train_data, .001, 1000)
+        print('{} training score: {}'.format(hidden_nodes, score(net, train_data)))
 
-    test_data = read_data('testData.csv', 'testLabels.csv')
-    print('Testing score: {}'.format(score(net, test_data)))
+        test_data = read_data('testData.csv', 'testLabels.csv')
+        print('{} testing score: {}'.format(hidden_nodes, score(net, test_data)))
 
 if __name__ == '__main__':
 
