@@ -58,11 +58,6 @@ def read_data(inputs_file, labels_file):
             return list(zip(inputs, labels))
 
 
-def read_labels(filename):
-    with open(filename) as f:
-        return [int(line) for line in f]
-
-
 def score(perceptron, data):
     correct = 0
     for inputs, label in data:
