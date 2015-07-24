@@ -86,6 +86,8 @@ def main():
     accuracy = score(perceptron, test_data)
     print('Testing accuracy: {}'.format(accuracy))
 
+    print('Final weights: {}'.format(perceptron._weights))
+
 
 if __name__ == '__main__':
     main()
